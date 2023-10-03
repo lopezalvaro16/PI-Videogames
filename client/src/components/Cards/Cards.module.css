@@ -1,0 +1,117 @@
+/*                 PRINCIPAL                 */
+/*-------------------------------------------*/
+.cards{
+  display: flex;
+  flex-direction: column;
+  /* background-image: url('../../assets/3.avif'); */
+  width: 100%;
+  height: fit-content;
+  gap: 15px;
+  justify-content: flex-start;
+  padding: 15px;
+  border: 1px solid black;
+}
+
+@media screen and (min-width: 300px) and (max-width:679px) {
+  .cards{
+    height: fit-content
+  }
+  .divCardsLenght{
+    height: fit-content !important;
+  }
+  .divCardsLenght div{
+    height: fit-content;
+  }
+  .divButton{
+    width: 80%;
+    gap: 5px;
+  }
+  .buttonPage{
+    width: 5px;
+  }
+}
+
+/* .divCardsLenght{
+  height: 100vmax;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.divCardsLenght div{
+  height: fit-content;
+} */
+/* .divCardsLenght div img{
+  height: auto;
+} */
+/*                 CARDS                     */
+/*-------------------------------------------*/
+.divCards{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100;
+  gap: 15px;
+  justify-content: space-evenly;
+  padding: 15px;
+  border: 1px solid black;
+}
+/*           CONTENEDOR DE BOTONES            */
+/*--------------------------------------------*/
+.divButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.divButton p{
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+}
+/*                BOTONES                     */
+/*--------------------------------------------*/
+.button {
+  width: auto;
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #ebe1e1;
+  background-color: #333;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 0px;
+}
+.button:hover {
+  background-color: #ffbb00;
+  transform: scale(1.1)
+}
+.button:disabled {
+  background-color: #ccc;
+  color: black;
+  cursor: not-allowed;
+}
+
+.buttonPage{
+  display: flex;
+  width: 20px;
+  border-radius: 5px;
+  padding: 8px 10px;
+  justify-content: center;
+  align-items: center;
+
+}
+.currentPageButton{
+  color: black;
+  background-color: orange;
+  cursor: pointer;
+
+}
+.currentPageButton:hover {
+  background-color: #ffbb00;
+  transform: scale(1.3)
+}
+

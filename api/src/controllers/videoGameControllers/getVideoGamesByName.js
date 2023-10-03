@@ -1,23 +1,27 @@
-require ('dotenv').config();
-const axios = require('axios');
+require("dotenv").config();
+const axios = require("axios");
 const { API_KEY } = process.env;
-const { Videogame, Genre } = require('../../db');
-const { Op } = require('sequelize');
+const { Videogame, Genre } = require("../../db");
+const { Op } = require("sequelize");
 
 const URL = `https://api.rawg.io/api/games?key=${API_KEY}`;
 
 // Se trae 15 games de la api, al igual que en la BD, pero se retorna de la api por ahora
 const getVideoGamesByName = async (name) => {
   //console.log('aqui', name)
-  if(!name){
-    const error = new Error('Debe ingresar un nombre para buscar el Videogame');
+  if (!name) {
+    const error = new Error("Debe ingresar un nombre para buscar el Videogame");
     error.statusCode = 400;
     throw error;
   }
   const formattedName = name.toLowerCase();
   // Busqueda en la API
-  const {data} = await axios.get(`${URL}&search=${encodeURIComponent(formattedName)}&search_precise=true&page_size=150`);
-  const gamesByName = data.results.map(game => {
+  const { data } = await axios.get(
+    `${URL}&search=${encodeURIComponent(
+      formattedName
+    )}&search_precise=true&page_size=150`
+  );
+  const gamesByName = data.results.map((game) => {
     return {
       id: game.id,
       name: game.name,
@@ -27,21 +31,23 @@ const getVideoGamesByName = async (name) => {
       released: game.released,
       rating: game.rating,
       genres: game.genres,
-    }
+    };
   });
 
   // Busqueda en la BD
   const dbResults = await Videogame.findAll({
-    where:{
-      name:{
-        [Op.iLike]: `%${formattedName}%`
-      }
-    }, limit: 15, include:[Genre]
+    where: {
+      name: {
+        [Op.iLike]: `%${formattedName}%`,
+      },
+    },
+    limit: 15,
+    include: [Genre],
   });
-  if(!gamesByName.length && !dbResults.length) {
-    const error = new Error('No se encontro este VideoGame');
+  if (!gamesByName.length && !dbResults.length) {
+    const error = new Error("No se encontro este VideoGame");
     error.statusCode = 404;
-    throw error
+    throw error;
   }
   const result = [...gamesByName, ...dbResults];
   return result;

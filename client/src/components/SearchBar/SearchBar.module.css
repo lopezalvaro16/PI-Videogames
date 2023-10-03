@@ -1,0 +1,152 @@
+/*                               PRINCIPAL                                */
+/*------------------------------------------------------------------------*/
+.searchBar{
+  font-family: 'Montserrat Alternates', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+  /* border: 2px solid orange; */
+  background-color: rgb(48, 41, 29);
+  padding: 8px;
+
+}
+
+/*                       BUSCAR POR NOMBRE                                */
+/*------------------------------------------------------------------------*/
+.divSearchName{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  align-items: center;
+  /* border: 2px solid orange; */
+  margin:15px;
+  /* background-color: rgb(230, 31, 186); */
+  /* border-radius: 5px; */
+  padding: 15px;
+  order: 2;
+  
+}
+.divSearchNameTitulo{
+  display: flex;
+  text-align: center;
+  font-size: 0.8rem;
+  color: white;
+}
+.divSearchNameInput{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+}
+
+/*                       BUSCAR POR GENERO                             */
+/* --------------------------------------------------------------------*/
+.divSearchGenre{
+  font-family: 'Montserrat Alternates', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 15px;
+  border: 2px solid orange;
+  /* border-radius: 5px; */
+  /* background-color: rgb(230, 31, 186); */
+  margin:15px;
+  background-color: #333;
+}
+.divSearchGenreTitulo{
+  display: flex;
+  text-align: center;
+  font-size: 0.8rem;
+  color: white;
+}
+.divSearchGenreSelect{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+}
+.selectGender{
+  font-family: 'Montserrat Alternates', sans-serif;
+  align-items: center;
+  height: 35px;
+  width: 200px;
+  /* border-radius: 7px; */
+  font-size: 0.8rem;
+  border: 2px solid black;
+}
+
+/*                           MODAL PARA MOSTRAR MENSAJES                               */
+/*-------------------------------------------------------------------------------------*/
+.divModal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(20, 19, 19, 0.92);
+  border: 3px solid aqua;
+}
+.divMessage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background-color: white;
+  width: 50%;
+  height: auto;
+  font-size: 0.7rem;
+  border: 3px solid orange;
+  /* border-radius: 12px; */
+  padding: 15px;
+  gap: 15px;
+  text-align: center;
+}
+
+
+/*                           COMPONENTES INDIVIDUALES                                  */
+/*-------------------------------------------------------------------------------------*/
+.input{
+  font-family: 'Montserrat Alternates', sans-serif;
+  width: 200px;
+  height: 30px;
+  /* border-radius: 7px; */
+  border-color: rgb(15, 15, 15);
+
+}
+
+.button {
+  width: auto;
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #ebe1e1;
+  background-color: rgb(61, 57, 57);
+  /* background-color: orange;   */
+  /* border-radius: 6px; */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.7s ease;
+  margin-bottom: 0px;
+}
+.button:hover {
+  color: black;
+  background-color: orange;
+  transform: scale(1.01)
+}
