@@ -4,6 +4,9 @@
   display: flex;
   width: auto;
   justify-content: center;
+  /* background-image: url('../../assets/2.webp');
+  background-repeat: repeat-y;
+  background-size: cover; */
   padding: 15px;
   gap: 15px;
 }

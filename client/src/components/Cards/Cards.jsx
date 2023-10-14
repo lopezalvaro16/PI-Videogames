@@ -3,7 +3,7 @@ import style from "./Cards.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getGenres, isLoadingChange } from "../../redux/actions/action";
 import Card from "../Card/Card";
-import Loading from "../Loading/Loading";
+import Loading from "../../view/Loading/Loading";
 import SearchBar from "../SearchBar/SearchBar";
 import { useNavigate } from "react-router-dom";
 
@@ -42,11 +42,7 @@ const Cards = (props) => {
   const dispatch = useDispatch();
   const { allVideoGames, isLoading, error } = useSelector((state) => state);
 
-  const filteredGames = allVideoGames?.slice(currentPage, currentPage + 15);
-  //console.log("currenpage", currentPage)
-  //console.log("filtrados: ", filteredGames)
-  //console.log("todos: ", allVideoGames)
-
+  const filteredGames = allVideoGames?.slice(currentPage, currentPage + 20);
   // Funciones del ciclo de vida del componente
   // ------------------------------------------------------------------------
   useEffect(() => {
@@ -74,14 +70,6 @@ const Cards = (props) => {
         let page = allVideoGames.slice(i, i + size);
         pages.push(page);
         pageNumber.push(i / size + 1); //
-        //         i =  0 /  15 = 0 + 1 = 1  i = 0  < length = 101
-        //         i = 15 /  15 = 1 + 1 = 2  i = 15 < length = 101
-        //         i = 30 /  15 = 2 + 1 = 3  i = 30 < length = 101
-        //         i = 45 /  15 = 3 + 1 = 4  i = 45 < length = 101
-        //         i = 60 /  15 = 4 + 1 = 5  i = 60 < length = 101
-        //         i = 75 /  15 = 5 + 1 = 6  i = 75 < length = 101
-        //         i = 90 /  15 = 4 + 1 = 7  i = 90 < length = 101
-        //        i = 105   i = 105 < length = 101 => false
       }
       setPages(pages);
       setPageNumber(pageNumber);

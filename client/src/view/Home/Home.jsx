@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 
 const Home = (props) => {
   // Estados locales
-  //const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // Estados y acciones globales

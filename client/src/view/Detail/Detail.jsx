@@ -11,6 +11,7 @@ const Detail = (props) => {
   const [videoGame, setVideoGame] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoanding] = useState(true);
 
   // Estados y acciones goblales
   const { error } = useSelector((state) => state);
@@ -22,10 +23,12 @@ const Detail = (props) => {
       .get(`http://localhost:3002/videogames/${id}`)
       .then(({ data }) => {
         setVideoGame(data);
+        setLoanding(false);
       })
       .catch(({ message }) => {
         dispatch(errorChange(message));
         navigate("/notfound");
+        setLoanding(false);
       });
   }, [id]);
 
@@ -39,6 +42,7 @@ const Detail = (props) => {
         <Link to={"/cards"}>
           <button className={style.button}>Volver</button>
         </Link>
+        {loading}
         {/* NOMBRE */}
         <h1 className={style.detailName}>{videoGame.name}</h1>
         <hr className={style.hrName}></hr>

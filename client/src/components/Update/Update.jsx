@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import style from "./Form.module.css";
+import style from "./Update.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  errorChange,
   getGenres,
   getPlatforms,
+  getVideoGames,
   isLoadingChange,
+  isModalOpenChange,
   messageChange,
-  postVideoGame,
 } from "../../redux/actions/action";
-import validation from "./validation";
-import { useNavigate } from "react-router-dom";
-const Form = (props) => {
+import validation from "../Form/validation";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+
+const Update = (props) => {
   // Estados locales
   // ----------------------------------------------------------------
+  const { id } = useParams();
   const [createGameForm, setCreateGameForm] = useState({
     name: "",
     description: "",
@@ -23,7 +28,7 @@ const Form = (props) => {
     released: "",
   });
   //const [message, setMessage] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  //const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
@@ -31,7 +36,7 @@ const Form = (props) => {
 
   // Estados y acciones globales
   // ----------------------------------------------------------------
-  const { allGenres, allPlatforms, message, error } = useSelector(
+  const { allGenres, allPlatforms, message, isModalOpen } = useSelector(
     (state) => state
   );
   const dispatch = useDispatch();
@@ -44,7 +49,8 @@ const Form = (props) => {
     if (value < 0 || value > 5) {
       event.preventDefault();
       dispatch(messageChange(`El rating min es 0 y el max es 5`));
-      openModal();
+      dispatch(isModalOpenChange(true));
+      //openModal();
       return;
     }
 
@@ -53,12 +59,14 @@ const Form = (props) => {
       const aux = createGameForm.genres.includes(value);
       if (aux) {
         dispatch(messageChange(`El genero ${value} ya fue agregado`));
-        openModal();
+        dispatch(isModalOpenChange(true));
+        //openModal();
         return;
       }
       if (createGameForm.genres.length > 5) {
         dispatch(messageChange(`Solo puedes agregar hasta 6 generos`));
-        openModal();
+        dispatch(isModalOpenChange(true));
+        //openModal();
         return;
       }
       setCreateGameForm({
@@ -73,12 +81,14 @@ const Form = (props) => {
       const aux = createGameForm.platforms.includes(value);
       if (aux) {
         dispatch(messageChange(`La plataforma ${value} ya fue agregada`));
-        openModal();
+        dispatch(isModalOpenChange(true));
+        //openModal();
         return;
       }
       if (createGameForm.platforms.length > 5) {
         dispatch(messageChange(`Solo puedes agregar hasta 6 plataformas`));
-        openModal();
+        dispatch(isModalOpenChange(true));
+        //openModal();
         return;
       }
       setCreateGameForm({
@@ -118,11 +128,15 @@ const Form = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    (error === "Network Error" || error === "Failed to featch") &&
-      navigate("/home");
     let auxErrors = Object.values(formErrors).every((value) => value === "");
     if (auxErrors) {
-      dispatch(postVideoGame(createGameForm));
+      axios
+        .put(`http://localhost:3002/videogames/${id}`, createGameForm)
+        .then((response) => {
+          dispatch(messageChange(response.data.message));
+          dispatch(isModalOpenChange(true));
+          //openModal();
+        });
       setCreateGameForm({
         name: "",
         description: "",
@@ -133,18 +147,19 @@ const Form = (props) => {
         released: "",
       });
       setFormErrors({});
-      error !== "Network Error" && openModal();
     }
   };
 
   const openModal = () => {
-    setIsModalOpen(true);
+    dispatch(isModalOpenChange(true));
   };
-
   const closeModal = () => {
-    setIsModalOpen(false);
-    if (message === "Video juego creado con exito") {
-      navigate("/home");
+    dispatch(isModalOpenChange(false));
+    if (message === "Video juego actualizado con !exito") {
+      dispatch(isLoadingChange(true));
+      dispatch(messageChange(""));
+      navigate(`/detail/${id}`);
+      dispatch(getVideoGames());
     }
     dispatch(messageChange(""));
   };
@@ -161,9 +176,30 @@ const Form = (props) => {
     dispatch(getPlatforms());
   }, []);
 
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [message]);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [message]);
+    axios
+      .get(`http://localhost:3002/videogames/${id}`)
+      .then(({ data }) => {
+        setCreateGameForm({
+          name: data.name,
+          description: data.description,
+          genres: data.genres.map((item) => item.name),
+          rating: data.rating,
+          released: data.released,
+          image: data.image,
+          platforms: data.platforms.map((item) => item.platform.name),
+        });
+      })
+      .catch(({ message }) => {
+        console.log(message);
+        dispatch(errorChange(message));
+        navigate("/home");
+      });
+  }, [id]);
 
   useEffect(() => {
     //console.log("Form: " , createGameForm);
@@ -190,8 +226,8 @@ const Form = (props) => {
     <div className={style.form}>
       <div className={style.divForm}>
         {/* TITULO */}
-        <h2>Create Videogame</h2>
-        <hr />
+        <h2>Update Videogame</h2>
+        <hr /> <br />
         <form onSubmit={handleSubmit} className={style.formCreateGame}>
           {/* IZQUIERDA */}
           <div className={style.formIzquierda}>
@@ -201,7 +237,6 @@ const Form = (props) => {
               <input
                 className={style.input}
                 type="text"
-                placeholder="ingresa un nombre"
                 name="name"
                 value={createGameForm.name}
                 onChange={handleChangeForm}
@@ -219,7 +254,6 @@ const Form = (props) => {
                 name="description"
                 cols="30"
                 rows="5"
-                placeholder="ingresa una descripción"
                 value={createGameForm.description}
                 onChange={handleChangeForm}
                 onBlur={handleBlur}
@@ -239,7 +273,7 @@ const Form = (props) => {
                 onBlur={handleBlur}
               >
                 <option value="default" hidden>
-                  escoja generos aqui
+                  Escoja generos aqui
                 </option>
                 {allGenres.map((genre) => (
                   <option key={genre.idGenreRawg} value={genre.name}>
@@ -335,7 +369,7 @@ const Form = (props) => {
                 onBlur={handleBlur}
               >
                 <option value="default" hidden>
-                  escoja plataformas aqui
+                  Escoja plataformas aqui
                 </option>
                 {allPlatforms.map((platform) => (
                   <option
@@ -373,7 +407,7 @@ const Form = (props) => {
                 disabled={!formValid}
                 type="submit"
               >
-                Crear
+                Actualizar
               </button>
               <button className={style.button} onClick={volver}>
                 Cerrar
@@ -399,4 +433,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default Update;

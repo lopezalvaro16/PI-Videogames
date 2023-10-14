@@ -109,6 +109,9 @@ const Card = (props) => {
           </div>
         )}
       </div>
+      <div>
+        <h1>hola</h1>
+      </div>
     </div>
   );
 };

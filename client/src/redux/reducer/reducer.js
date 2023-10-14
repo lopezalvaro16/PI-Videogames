@@ -75,7 +75,7 @@ const reducer = (state = initialState, action) => {
       if (payload === "All")
         return { ...state, allVideoGames: state.copyAllVideoGames };
       // Valido si estoy con todos los video games para filtrarlos
-      if (state.allVideoGames.length === state.copyAllVideoGames) {
+      if (state.allVideoGames.length === state.copyAllVideoGames.length) {
         // Filtro de la copia donde tengo todos mis video games
         allVideoGamesFiltered = state.copyAllVideoGames.filter((game) =>
           game.genres.some((genre) => genre.name === payload)
@@ -85,14 +85,12 @@ const reducer = (state = initialState, action) => {
         allVideoGamesFiltered = state.allVideoGames.filter((game) =>
           game.genres.some((genre) => genre.name === payload)
         );
-        //console.log('aqui', allVideoGamesFiltered);
       }
       // Si no llego a encontra el video game seteo mi estado de error
       if (!allVideoGamesFiltered.length)
         return {
           ...state,
           error: `No se encontro el video juego con genero ${payload}`,
-          //allVideoGames:state.copyAllVideoGames,
         };
       return {
         ...state,
